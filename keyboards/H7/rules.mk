@@ -56,3 +56,4 @@ BACKLIGHT_ENABLE ?= yes  # Enable keyboard backlight functionality
 AUDIO_ENABLE ?= no
 RGBLIGHT_ENABLE ?= no
 UNICODE_ENABLE ?= yes
+LEADER_ENABLE ?= yes

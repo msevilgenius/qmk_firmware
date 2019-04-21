@@ -13,7 +13,7 @@ uint8_t os_target = 1;
 
 // uint8_t (unsigned char) has 8 bits available
 // we are able to store the active unicode input mechanism using
-// 3 of those bits (with 2 spare slots)
+// 3 of those bits (with 3 spare slots)
 //
 // leaving 5 bits remaining for additional feature flags
 //
@@ -25,7 +25,7 @@ uint8_t os_target = 1;
 //       2  |  0 0 0 0 0 0 1 0  |  UC_WIN
 //       3  |  0 0 0 0 0 0 1 1  |  UC_BSD
 //       4  |  0 0 0 0 0 1 0 0  |  UC_WINC
-//       5  |  0 0 0 0 0 1 0 1  |  UC_OSX_RALT
+//       5  |  0 0 0 0 0 1 0 1  |  -unused-
 //       6  |  0 0 0 0 0 1 1 0  |  -unused-
 //       7  |  0 0 0 0 0 1 1 1  |  -unused-
 typedef union {
@@ -40,7 +40,7 @@ userspace_config_t userspace_config;
 // unicode input mode setting
 // pressing [Mode] cycles through the list, setting the current input method
 // pressing [Function]-[Mode] commits the current input method to EEPROM
-const uint8_t UC_OPTIONS[] = { UC_OSX, UC_LNX, UC_WIN, UC_BSD, UC_WINC, UC_OSX_RALT };
+const uint8_t UC_OPTIONS[] = { UC_OSX, UC_LNX, UC_WIN, UC_BSD, UC_WINC };
 const uint8_t UC_OPTIONS_LENGTH = (uint8_t) ( sizeof(UC_OPTIONS) / sizeof(UC_OPTIONS[0]) );
 
 int comparator( const void *lhs, const void *rhs )
@@ -81,8 +81,6 @@ uint8_t getOSFromInputMethod(uint8_t currentInputMethod) {
       break;
     case 0:
       /* OSX */
-    case 5:
-      /* OSX - RAlt */
       OS = OS_OSX;
       break;
     case 2:
