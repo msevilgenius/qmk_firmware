@@ -259,3 +259,13 @@ uint8_t oled_max_chars(void);
 
 // Returns the maximum number of lines that will fit on the oled
 uint8_t oled_max_lines(void);
+
+// writes the 8 pixels in data as a vertical line at the given horizontal pixel and vertical line (each line is 8 pixels high)
+void oled_write_byte(uint8_t col, uint8_t line, uint8_t data);
+
+//
+typedef void (*render_func)(uint8_t *data, void *user_args);
+
+// calls the passed function with the current data byte at the specified position along with the user supplied args
+// This allows for more complex rendering operations, such as transparency.
+void oled_byte_apply_func(uint8_t col, uint8_t line, render_func f, void *user_args);

@@ -585,4 +585,23 @@ void oled_task(void) {
 #endif
 }
 
+void oled_write_byte(uint8_t col, uint8_t line, uint8_t data) {
+    if (col >= OLED_DISPLAY_WIDTH) return;
+    if ((line * 8) >= OLED_DISPLAY_HEIGHT) return;
+    uint16_t i = (line * OLED_DISPLAY_WIDTH) + col;
+    if (oled_buffer[i] == data) return;
+    oled_buffer[i] = data;
+    oled_dirty |= (1 << (i / OLED_BLOCK_SIZE));
+}
+
+void oled_byte_apply_func(uint8_t col, uint8_t line, render_func f, void *user_args) {
+    if (col >= OLED_DISPLAY_WIDTH) return;
+    if ((line * 8) >= OLED_DISPLAY_HEIGHT) return;
+    uint16_t i = (line * OLED_DISPLAY_WIDTH) + col;
+    uint8_t data = oled_buffer[i];
+    f(&(oled_buffer[i]), user_args);
+    if (oled_buffer[i] == data) return;
+    oled_dirty |= (1 << (i / OLED_BLOCK_SIZE));
+}
+
 __attribute__((weak)) void oled_task_user(void) {}
